@@ -1,0 +1,15 @@
+a+c: Addition d’un entier (a) et de la valeur ASCII du char c
+x+c: Addition d’un float (x) et de la valeur ASCII du char c: 97.1: double
+a+b: Addition de 2 ints: -1: int
+x+y: Addition de 2 double: -0.1: double
+a/b: Division de 2 ints: 0: int
+x/y: Division de 2 double: -0.5: double
+a == b: test égalité de 2 int: 0: int ou bool
+x == y: test égalité de 2 double: 0: int ou bool
+!(x >= 0.2): test inégalité d'un double: 1: int ou bool
+!a: test si a != 0: 1: int ou bool
+!b: test si b != 0: 1: int ou bool
+!y: test si y != 0: 1: int ou bool
+6 < x && x < 10 = 6 < x < 10: test inégalité sur a: 0: int ou bool
+x = 2: defini 2 dans x: 2: int
+x == 2: test x == 2: 0: bool ou int

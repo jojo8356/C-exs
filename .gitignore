@@ -1,0 +1,16 @@
+# ne suit pas les exécutables
+main
+lit_csv
+programme
+test
+exemple-*
+!exemple-*.c
+
+# documentation
+html/
+
+# backups
+*.bak/
+
+# corrections
+sae/lit_log_csv*

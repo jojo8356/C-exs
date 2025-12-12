@@ -1,0 +1,25 @@
+terminale: pas d'operation sur reteurn func: fact(i, n*i)
+non-terminale: operation sur return func: n*fact(n-1)
+
+mystere(5, 17)
+-> mystere(5, 12)
+-> mystere(5, 7)
+-> mystere(5, 2)
+-> 5
+
+division mais return reste
+
+mystere(21, 15)
+-> mystere(15, 6)
+-> mystere(6, 3)
+-> mystere(3, 0)
+-> 3
+
+PGCD
+
+mystere("radar", 0, 4)
+-> mystere("radar", 1, 3)
+-> mystere("radar", 2, 2)
+-> 1
+
+Palindrome

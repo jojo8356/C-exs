@@ -1,0 +1,7 @@
+1. Il va utiliser la plus gde donnée: 4 octet
+2. on change la valeur de e1.valeur.flottant
+et e1.valeur.entier sera une valeur au hazard
+3. Car on connait déjà tous les types de données et
+cela permet d'optimiser la mémoire.
+4. devient code ASCII de A: 65
+6. une union est utile lorsqu'on utilise un type à la fois

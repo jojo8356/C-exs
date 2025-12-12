@@ -1,0 +1,8 @@
+1. File: FIFO: On ajoute à la fin, on retire au début
+Pile: LIFO: On ajoute au-dessus, on retire au-dessus
+
+2. Enfiler (enqueue): Ajoute un élément à la fin de la file
+Défiler (dequeue): Retire l’élément au début
+Front / Peek: Regarde l’élément au début sans le retirer
+isEmpty: Vérifie si la file est vide
+getSize: Donne le nombre d’éléments dans la file
