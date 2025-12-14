@@ -1,0 +1,79 @@
+typedef struct Noeud {
+    int valeur;
+    struct Noeud* suivant;
+} Noeud;
+
+typedef struct {
+    Noeud* sommet;
+} Pile;
+
+int estVide(Pile* p) {
+    return p->sommet == NULL;
+}
+
+void empiler(Pile* p, int valeur) {
+    Noeud* nouveau = malloc(sizeof(Noeud));
+    if (!nouveau) {
+        fprintf(stderr, "Erreur d'allocation de mémoire\n");
+        exit(1);
+    }
+
+    nouveau->valeur = valeur;
+    nouveau->suivant = p->sommet;
+    p->sommet = nouveau;
+}
+
+int depiler(Pile* p) {
+    if (estVide(p)) {
+        fprintf(stderr, "Pile vide, pas de sommet\n");
+        return -1;
+    }
+
+    Noeud* temp = p->sommet;
+    int ret = temp->valeur;
+
+    p->sommet = temp->suivant;
+    free(temp);
+
+    return ret;
+}
+
+// File
+
+typedef struct {
+  Noeud* tete;
+  Noeud* queue;
+} File;
+
+Noeud* init(int valeur) {
+  Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
+  nouveau->valeur = valeur;
+  nouveau->suivant = NULL;
+  return nouveau;
+}
+
+bool FileEstVide(File* f) { return f->tete == NULL; }
+
+void enfiler(File* file, int valeur) {
+  Noeud* nouveau = init(valeur);
+  if (file->queue == NULL) {
+    file->tete = nouveau;
+  } else {
+    file->queue->suivant = nouveau;
+  }
+  file->queue = nouveau;
+}
+
+bool defiler(File *file, int *val){
+    if (FileEstVide(file)) {
+        return false;
+    }
+    Noeud* tmp = file->tete;
+    *val = tmp->valeur;
+    file->tete = file->tete->suivant;
+    if (file->tete == NULL) {
+        file->queue = NULL;
+    }
+    free(tmp);
+    return true;
+}

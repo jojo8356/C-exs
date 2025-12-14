@@ -28,6 +28,7 @@ void empiler(Pile* p, int valeur) {
 
 int depiler(Pile* p) {
     if (estVide(p)) {
+        fprintf(stderr, "Pile vide, pas de sommet\n");
         return -1;
     }
 
