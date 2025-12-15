@@ -9,7 +9,7 @@ typedef struct Noeud {
 void afficherListe(Noeud* tete) {
   Noeud* courant = tete;
   while (courant != NULL) {
-    printf("%d -> ", courant->valeur);
+    printf("%d -> ", courant->value);
     courant = courant->suivant;
   }
   printf("NULL\n");
@@ -25,7 +25,7 @@ unsigned longueurListe(Noeud* tete) {
 }
 Noeud* initNoeud(int valeur) {
   Noeud* nouveauNoeud = (Noeud*)malloc(sizeof(Noeud));
-  nouveauNoeud->valeur = valeur;
+  nouveauNoeud->value = valeur;
   nouveauNoeud->suivant = NULL;
   return nouveauNoeud;
 }

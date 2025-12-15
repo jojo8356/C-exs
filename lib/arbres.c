@@ -75,7 +75,7 @@ int* parcourirLargeurAB(NoeudAB* racine) {
   while (debut < fin) {
     // Défiler le noeud courant
     NoeudAB* courant = file[debut++];
-    resultat[index++] = courant->valeur;
+    resultat[index++] = courant->value;
 
     // Enfiler les enfants
     if (courant->gauche != NULL) {
@@ -92,7 +92,7 @@ int* parcourirLargeurAB(NoeudAB* racine) {
 
 void parcoursPrefixe(NoeudAB* racine) {
   if (racine != NULL) {
-    printf("%d ", racine->valeur);
+    printf("%d ", racine->value);
     parcoursInfixe(racine->gauche);
     parcoursInfixe(racine->droit);
   }
@@ -101,7 +101,7 @@ void parcoursPrefixe(NoeudAB* racine) {
 void parcoursInfixe(NoeudAB* racine) {
   if (racine != NULL) {
     parcoursInfixe(racine->gauche);
-    printf("%d ", racine->valeur);
+    printf("%d ", racine->value);
     parcoursInfixe(racine->droit);
   }
 }
@@ -110,7 +110,7 @@ void parcoursSuffixe(NoeudAB* racine) {
   if (racine != NULL) {
     parcoursInfixe(racine->gauche);
     parcoursInfixe(racine->droit);
-    printf("%d ", racine->valeur);
+    printf("%d ", racine->value);
   }
 }
 
@@ -138,23 +138,23 @@ void parcourirProfondeurAB(NoeudAB* racine, DFSOrdre ordre, bool inverse) {
     return;
   }
   if (ordre == PRE) {
-    printf("%d ", racine->valeur);
+    printf("%d ", racine->value);
   }
   if (inverse) {
     parcourirProfondeurAB(racine->droit, ordre, inverse);
     if (ordre == IN) {
-      printf("%d ", racine->valeur);
+      printf("%d ", racine->value);
     }
     parcourirProfondeurAB(racine->gauche, ordre, inverse);
   } else {
     parcourirProfondeurAB(racine->gauche, ordre, inverse);
     if (ordre == IN) {
-      printf("%d ", racine->valeur);
+      printf("%d ", racine->value);
     }
     parcourirProfondeurAB(racine->droit, ordre, inverse);
   }
   if (ordre == POST) {
-    printf("%d ", racine->valeur);
+    printf("%d ", racine->value);
   }
 }
 
@@ -186,23 +186,23 @@ void afficherAB(NoeudAB* racine) {
 NoeudAB* creerExempleAB() {
   // Création de la racine et de ses sous-arbres
   NoeudAB* racine = malloc(sizeof(NoeudAB));
-  racine->valeur = 2;
+  racine->value = 2;
   NoeudAB* n7 = malloc(sizeof(NoeudAB));
-  n7->valeur = 7;
+  n7->value = 7;
   NoeudAB* n5 = malloc(sizeof(NoeudAB));
-  n5->valeur = 5;
+  n5->value = 5;
   NoeudAB* n6 = malloc(sizeof(NoeudAB));
-  n6->valeur = 6;
+  n6->value = 6;
   NoeudAB* n2 = malloc(sizeof(NoeudAB));
-  n2->valeur = 2;
+  n2->value = 2;
   NoeudAB* n9 = malloc(sizeof(NoeudAB));
-  n9->valeur = 9;
+  n9->value = 9;
   NoeudAB* n52 = malloc(sizeof(NoeudAB));
-  n52->valeur = 5;
+  n52->value = 5;
   NoeudAB* n11 = malloc(sizeof(NoeudAB));
-  n11->valeur = 11;
+  n11->value = 11;
   NoeudAB* n4 = malloc(sizeof(NoeudAB));
-  n4->valeur = 4;
+  n4->value = 4;
 
   // arêtes
   racine->gauche = n7;
@@ -297,11 +297,11 @@ void parcoursLargeur(NoeudAB* racine) {
   }
 
   File* file = creerFile();
-  enfiler(file, racine->valeur);
+  enfiler(file, racine->value);
 
   while (!FileEstVide(file)) {
     NoeudAB* courant = defiler(file);
-    printf("%d ", courant->valeur);
+    printf("%d ", courant->value);
 
     if (courant->gauche != NULL) {
       enfiler(file, courant->gauche);
@@ -324,7 +324,7 @@ void iterativePreorderTree(NoeudAB* racine) {
 
   while (!estVide(stack)) {
     NoeudAB* courant = retirerTete(stack);
-    printf("%d ", courant->valeur);
+    printf("%d ", courant->value);
 
     // empiler d'abord le droit pour que le gauche soit traité en premier
     if (courant->droit != NULL) {

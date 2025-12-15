@@ -1,6 +1,6 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct Noeud {
   int valeur;
@@ -14,7 +14,7 @@ typedef struct {
 
 Noeud* init(int valeur) {
   Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
-  nouveau->valeur = valeur;
+  nouveau->value = valeur;
   nouveau->suivant = NULL;
   return nouveau;
 }
@@ -32,13 +32,11 @@ void enfiler(File* file, int valeur) {
 bool FileEstVide(File* f) { return f->tete == NULL; }
 
 void afficherFile(File* f) {
-    if (FileEstVide(f)) {
-        printf("File vide\n");
-        return;
-    }
-    printf("File: tête = %d, queue = %d\n", 
-           f->tete->valeur,
-           f->queue->valeur);
+  if (FileEstVide(f)) {
+    printf("File vide\n");
+    return;
+  }
+  printf("File: tête = %d, queue = %d\n", f->tete->value, f->queue->value);
 }
 
 /*
@@ -47,7 +45,7 @@ int defiler(File* file) {
     return -1;
   }
   Noeud* tmp = file->tete;
-  int valeur = tmp->valeur;
+  int valeur = tmp->value;
   file->tete = file->tete->suivant;
   if (file->tete == NULL) {
     file->queue = NULL;
@@ -75,18 +73,18 @@ int main() {
 }
 */
 
-bool defiler(File *file, int *val){
-    if (FileEstVide(file)) {
-        return false;
-    }
-    Noeud* tmp = file->tete;
-    *val = tmp->valeur;
-    file->tete = file->tete->suivant;
-    if (file->tete == NULL) {
-        file->queue = NULL;
-    }
-    free(tmp);
-    return true;
+bool defiler(File* file, int* val) {
+  if (FileEstVide(file)) {
+    return false;
+  }
+  Noeud* tmp = file->tete;
+  *val = tmp->value;
+  file->tete = file->tete->suivant;
+  if (file->tete == NULL) {
+    file->queue = NULL;
+  }
+  free(tmp);
+  return true;
 }
 
 int main() {

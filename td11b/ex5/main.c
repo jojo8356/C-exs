@@ -1,6 +1,6 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct Noeud {
   int valeur;
@@ -13,7 +13,7 @@ typedef struct Pile {
 
 Noeud* initNoeud(int valeur) {
   Noeud* nouveauNoeud = (Noeud*)malloc(sizeof(Noeud));
-  nouveauNoeud->valeur = valeur;
+  nouveauNoeud->value = valeur;
   nouveauNoeud->suivant = NULL;
   return nouveauNoeud;
 }
@@ -51,7 +51,7 @@ void empiler(Pile* p, int valeur) {
     exit(1);
   }
 
-  nouveau->valeur = valeur;
+  nouveau->value = valeur;
   nouveau->suivant = p->sommet;
   p->sommet = nouveau;
 }
@@ -62,7 +62,7 @@ int depiler(Pile* p) {
   }
 
   Noeud* temp = p->sommet;
-  int ret = temp->valeur;
+  int ret = temp->value;
 
   p->sommet = temp->suivant;
   free(temp);
@@ -100,55 +100,54 @@ void deleteByIndex(Noeud** tete, int index) {
 }
 
 void afficherListe(Noeud* tete) {
-    Noeud* courant = tete;
-    printf("Liste: ");
-    while (courant != NULL) {
-        printf("%d -> ", courant->valeur);
-        courant = courant->suivant;
-    }
-    printf("NULL\n");
+  Noeud* courant = tete;
+  printf("Liste: ");
+  while (courant != NULL) {
+    printf("%d -> ", courant->value);
+    courant = courant->suivant;
+  }
+  printf("NULL\n");
 }
 
+int main() {
+  Noeud* tete = initNoeud(1);
+  Pile* indices = initPile();
 
-int main(){
-    Noeud* tete = initNoeud(1);
-    Pile* indices = initPile();
-
-    // generate list with duplicates
-    int i = 0;
-    for (i = 2; i <= 4; i++) {
-        for (int j = 0; j < i; j++) {
-            ajouterFin(&tete, i);
-        }
+  // generate list with duplicates
+  int i = 0;
+  for (i = 2; i <= 4; i++) {
+    for (int j = 0; j < i; j++) {
+      ajouterFin(&tete, i);
     }
+  }
 
-    // get target from user
-    int target;
-    printf("Les elements de la liste:\n");
-    afficherListe(tete);
-    printf("Entrez l'entier a supprimer:\n");
-    scanf("%d", &target);
+  // get target from user
+  int target;
+  printf("Les elements de la liste:\n");
+  afficherListe(tete);
+  printf("Entrez l'entier a supprimer:\n");
+  scanf("%d", &target);
 
-    // get indices of target occurrences
-    Noeud* courant = tete;
-    i = 0;
-    while (courant != NULL) {
-        int tmp = courant->valeur;
-        if (tmp == target) {
-            empiler(indices, i);
-        }
-        courant = courant->suivant;
-        i++;
+  // get indices of target occurrences
+  Noeud* courant = tete;
+  i = 0;
+  while (courant != NULL) {
+    int tmp = courant->value;
+    if (tmp == target) {
+      empiler(indices, i);
     }
-    
-    // delete target occurrences from list from indexes
-    int index = depiler(indices);
-    while (index != -1) {
-        deleteByIndex(&tete, index);
-        index = depiler(indices);
-    }
+    courant = courant->suivant;
+    i++;
+  }
 
-    afficherListe(tete);
-    libererListe(tete);
-    return 0;
+  // delete target occurrences from list from indexes
+  int index = depiler(indices);
+  while (index != -1) {
+    deleteByIndex(&tete, index);
+    index = depiler(indices);
+  }
+
+  afficherListe(tete);
+  libererListe(tete);
+  return 0;
 }

@@ -13,7 +13,7 @@ typedef struct {
 
 Noeud* init(int valeur) {
   Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
-  nouveau->valeur = valeur;
+  nouveau->value = valeur;
   nouveau->suivant = NULL;
   return nouveau;
 }

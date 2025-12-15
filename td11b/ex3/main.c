@@ -7,63 +7,62 @@ typedef struct Noeud {
 } Noeud;
 
 Noeud* creerListeDunTab(int tab[], int taille) {
-    if (taille <= 0) return NULL;
+  if (taille <= 0) return NULL;
 
-    Noeud* tete = NULL;
-    Noeud* courant = NULL;
+  Noeud* tete = NULL;
+  Noeud* courant = NULL;
 
-    for (int i = 0; i < taille; i++) {
-        Noeud* nouveauNoeud = (Noeud*)malloc(sizeof(Noeud));
-        nouveauNoeud->valeur = tab[i];
-        nouveauNoeud->suivant = NULL;
+  for (int i = 0; i < taille; i++) {
+    Noeud* nouveauNoeud = (Noeud*)malloc(sizeof(Noeud));
+    nouveauNoeud->value = tab[i];
+    nouveauNoeud->suivant = NULL;
 
-        if (tete == NULL) {
-            tete = nouveauNoeud;
-            courant = tete;
-        } else {
-            courant->suivant = nouveauNoeud;
-            courant = nouveauNoeud;
-        }
+    if (tete == NULL) {
+      tete = nouveauNoeud;
+      courant = tete;
+    } else {
+      courant->suivant = nouveauNoeud;
+      courant = nouveauNoeud;
     }
-    return tete;
+  }
+  return tete;
 }
 
 int longueurListe(Noeud* tete) {
-    int longueur = 0;
-    Noeud* courant = tete;
-    while (courant != NULL) {
-        longueur++;
-        courant = courant->suivant;
-    }
-    return longueur;
+  int longueur = 0;
+  Noeud* courant = tete;
+  while (courant != NULL) {
+    longueur++;
+    courant = courant->suivant;
+  }
+  return longueur;
 }
 
 void libererListe(Noeud* tete) {
-    Noeud* courant = tete;
-    while (courant != NULL) {
-        Noeud* temp = courant;
-        courant = courant->suivant;
-        free(temp);
-    }
+  Noeud* courant = tete;
+  while (courant != NULL) {
+    Noeud* temp = courant;
+    courant = courant->suivant;
+    free(temp);
+  }
 }
 
 void afficherListe(Noeud* tete) {
-    Noeud* courant = tete;
-    printf("Liste: ");
-    while (courant != NULL) {
-        printf("%d -> ", courant->valeur);
-        courant = courant->suivant;
-    }
-    printf("NULL\n");
+  Noeud* courant = tete;
+  printf("Liste: ");
+  while (courant != NULL) {
+    printf("%d -> ", courant->value);
+    courant = courant->suivant;
+  }
+  printf("NULL\n");
 }
 
-
-int main(){
-    int tab[] = {12, 99, 37};
-    Noeud* tete = creerListeDunTab(tab, 3);
-    afficherListe(tete);
-    int len = longueurListe(tete);
-    printf("Longueur de la liste: %d\n", len);
-    libererListe(tete);
-    return 0;
+int main() {
+  int tab[] = {12, 99, 37};
+  Noeud* tete = creerListeDunTab(tab, 3);
+  afficherListe(tete);
+  int len = longueurListe(tete);
+  printf("Longueur de la liste: %d\n", len);
+  libererListe(tete);
+  return 0;
 }

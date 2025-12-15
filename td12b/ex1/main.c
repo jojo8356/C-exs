@@ -1,6 +1,6 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct Noeud {
   int valeur;
@@ -11,41 +11,40 @@ typedef struct Noeud {
 
 bool estVide(Noeud* queue) { return queue == NULL; }
 
-void afficherFile(Noeud* queue){
-    if (estVide(queue)) {
-        printf("File vide: queue @%p\n", queue);
-        return;
-    }
-    printf("File: queue = %d\n", 
-           queue->valeur);
+void afficherFile(Noeud* queue) {
+  if (estVide(queue)) {
+    printf("File vide: queue @%p\n", queue);
+    return;
+  }
+  printf("File: queue = %d\n", queue->value);
 }
 
 void enfiler(Noeud** queue, int valeur) {
-    Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
-    nouveau->valeur = valeur;
-    if (estVide(*queue)) {
-        nouveau->suivant = nouveau;
-    } else {
-        nouveau->suivant = (*queue)->suivant;
-        (*queue)->suivant = nouveau;
-    }
-    *queue = nouveau;
+  Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
+  nouveau->value = valeur;
+  if (estVide(*queue)) {
+    nouveau->suivant = nouveau;
+  } else {
+    nouveau->suivant = (*queue)->suivant;
+    (*queue)->suivant = nouveau;
+  }
+  *queue = nouveau;
 }
 
 int defiler(Noeud** queue) {
-    if (estVide(*queue)) {
-        fprintf(stderr, "Erreur: tentative de défilement d'une file vide\n");
-        exit(1);
-    }
-    Noeud* tete = (*queue)->suivant;
-    int valeur = tete->valeur;
-    if (tete == *queue) {
-        *queue = NULL; // vide file
-    } else {
-        (*queue)->suivant = tete->suivant; // sauter la tête
-    }
-    free(tete);
-    return valeur;
+  if (estVide(*queue)) {
+    fprintf(stderr, "Erreur: tentative de défilement d'une file vide\n");
+    exit(1);
+  }
+  Noeud* tete = (*queue)->suivant;
+  int valeur = tete->value;
+  if (tete == *queue) {
+    *queue = NULL;  // vide file
+  } else {
+    (*queue)->suivant = tete->suivant;  // sauter la tête
+  }
+  free(tete);
+  return valeur;
 }
 
 /*
@@ -54,7 +53,7 @@ bool defiler(Noeud** queue, int* valeur) {
         return false;
     }
     Noeud* tete = (*queue)->suivant;
-    *valeur = tete->valeur;
+    *valeur = tete->value;
     if (tete == *queue) {
         *queue = NULL;
     } else {
