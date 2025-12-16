@@ -21,6 +21,15 @@ Noeud* creerListeDunTab(int tab[], int n) {
   return tete;
 }
 
+int lenListe(Noeud* l) {
+  int compteur = 0;
+  while (l) {
+    compteur++;
+    l = l->suivant;
+  }
+  return compteur;
+}
+
 void afficherListe(Noeud* l) {
   while (l) {
     printf("%d -> ", l->value);

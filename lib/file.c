@@ -17,7 +17,7 @@ void enfiler(File* file, int valeur) {
   Noeud* nouveauNoeud = malloc(sizeof(Noeud));
   nouveauNoeud->value = valeur;
   nouveauNoeud->suivant = NULL;
-  if (estVide(file)) {
+  if (FileEstVide(file)) {
     file->debut = nouveauNoeud;
   } else {
     file->fin->suivant = nouveauNoeud;

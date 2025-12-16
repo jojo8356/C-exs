@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "file.h"
-#include "liste.h"
+#include "filegen.h"
+#include "pilegen.h"
 
 int calculerHauteurAB(NoeudAB* racine) {
   if (racine == NULL) {  // si vide
@@ -75,7 +75,7 @@ int* parcourirLargeurAB(NoeudAB* racine) {
   while (debut < fin) {
     // Défiler le noeud courant
     NoeudAB* courant = file[debut++];
-    resultat[index++] = courant->value;
+    resultat[index++] = courant->valeur;
 
     // Enfiler les enfants
     if (courant->gauche != NULL) {
@@ -92,25 +92,25 @@ int* parcourirLargeurAB(NoeudAB* racine) {
 
 void parcoursPrefixe(NoeudAB* racine) {
   if (racine != NULL) {
-    printf("%d ", racine->value);
-    parcoursInfixe(racine->gauche);
-    parcoursInfixe(racine->droit);
+    printf("%d ", racine->valeur);
+    parcoursPrefixe(racine->gauche);
+    parcoursPrefixe(racine->droit);
   }
 }
 
 void parcoursInfixe(NoeudAB* racine) {
   if (racine != NULL) {
     parcoursInfixe(racine->gauche);
-    printf("%d ", racine->value);
+    printf("%d ", racine->valeur);
     parcoursInfixe(racine->droit);
   }
 }
 
 void parcoursSuffixe(NoeudAB* racine) {
   if (racine != NULL) {
-    parcoursInfixe(racine->gauche);
-    parcoursInfixe(racine->droit);
-    printf("%d ", racine->value);
+    parcoursSuffixe(racine->gauche);
+    parcoursSuffixe(racine->droit);
+    printf("%d ", racine->valeur);
   }
 }
 
@@ -138,23 +138,23 @@ void parcourirProfondeurAB(NoeudAB* racine, DFSOrdre ordre, bool inverse) {
     return;
   }
   if (ordre == PRE) {
-    printf("%d ", racine->value);
+    printf("%d ", racine->valeur);
   }
   if (inverse) {
     parcourirProfondeurAB(racine->droit, ordre, inverse);
     if (ordre == IN) {
-      printf("%d ", racine->value);
+      printf("%d ", racine->valeur);
     }
     parcourirProfondeurAB(racine->gauche, ordre, inverse);
   } else {
     parcourirProfondeurAB(racine->gauche, ordre, inverse);
     if (ordre == IN) {
-      printf("%d ", racine->value);
+      printf("%d ", racine->valeur);
     }
     parcourirProfondeurAB(racine->droit, ordre, inverse);
   }
   if (ordre == POST) {
-    printf("%d ", racine->value);
+    printf("%d ", racine->valeur);
   }
 }
 
@@ -173,36 +173,37 @@ void libererAB(NoeudAB** racine) {
   }
 }
 
-void afficherAB(NoeudAB* racine) {
-  if (racine == NULL) {
-    printf("Arbre vide\n");
-    return;
-  }
-  printf("Arbre (parcours préfixe): ");
-  parcoursPrefixe(racine);
-  printf("\n");
-}
+// Ancienne version simple (parcours préfixe)
+// void afficherABSimple(NoeudAB* racine) {
+//   if (racine == NULL) {
+//     printf("Arbre vide\n");
+//     return;
+//   }
+//   printf("Arbre (parcours préfixe): ");
+//   parcoursPrefixe(racine);
+//   printf("\n");
+// }
 
 NoeudAB* creerExempleAB() {
   // Création de la racine et de ses sous-arbres
   NoeudAB* racine = malloc(sizeof(NoeudAB));
-  racine->value = 2;
+  racine->valeur = 2;
   NoeudAB* n7 = malloc(sizeof(NoeudAB));
-  n7->value = 7;
+  n7->valeur = 7;
   NoeudAB* n5 = malloc(sizeof(NoeudAB));
-  n5->value = 5;
+  n5->valeur = 5;
   NoeudAB* n6 = malloc(sizeof(NoeudAB));
-  n6->value = 6;
+  n6->valeur = 6;
   NoeudAB* n2 = malloc(sizeof(NoeudAB));
-  n2->value = 2;
+  n2->valeur = 2;
   NoeudAB* n9 = malloc(sizeof(NoeudAB));
-  n9->value = 9;
+  n9->valeur = 9;
   NoeudAB* n52 = malloc(sizeof(NoeudAB));
-  n52->value = 5;
+  n52->valeur = 5;
   NoeudAB* n11 = malloc(sizeof(NoeudAB));
-  n11->value = 11;
+  n11->valeur = 11;
   NoeudAB* n4 = malloc(sizeof(NoeudAB));
-  n4->value = 4;
+  n4->valeur = 4;
 
   // arêtes
   racine->gauche = n7;
@@ -296,43 +297,187 @@ void parcoursLargeur(NoeudAB* racine) {
     return;
   }
 
-  File* file = creerFile();
-  enfiler(file, racine->value);
+  FileGen* file = creerFileGen();
+  enfilerGen(file, racine);
 
-  while (!FileEstVide(file)) {
-    NoeudAB* courant = defiler(file);
-    printf("%d ", courant->value);
+  while (!estVideFileGen(file)) {
+    NoeudAB* courant = defilerGen(file);
+    printf("%d ", courant->valeur);
 
     if (courant->gauche != NULL) {
-      enfiler(file, courant->gauche);
+      enfilerGen(file, courant->gauche);
     }
     if (courant->droit != NULL) {
-      enfiler(file, courant->droit);
+      enfilerGen(file, courant->droit);
     }
   }
+  detruireFileGen(file);
   printf("\n");
 }
 
-// with node list
-void iterativePreorderTree(NoeudAB* racine) {
+void parcourirPreItAB(NoeudAB* racine) {
   if (racine == NULL) {
     return;
   }
 
-  Noeud* stack = creerListe();
-  ajouterEnTete(stack, racine);
+  PileGen* stack = creerPileGen();
+  empilerGen(stack, racine);
 
-  while (!estVide(stack)) {
-    NoeudAB* courant = retirerTete(stack);
-    printf("%d ", courant->value);
+  while (!estVidePileGen(stack)) {
+    NoeudAB* courant = depilerGen(stack);
+    printf("%d ", courant->valeur);
 
-    // empiler d'abord le droit pour que le gauche soit traité en premier
-    if (courant->droit != NULL) {
-      ajouterEnTete(stack, courant->droit);
-    }
-    if (courant->gauche != NULL) {
-      ajouterEnTete(stack, courant->gauche);
+    if (courant->droit != NULL) empilerGen(stack, courant->droit);
+    if (courant->gauche != NULL) empilerGen(stack, courant->gauche);
+  }
+  detruirePileGen(stack);
+  printf("\n");
+}
+
+void parcourirInItAB(NoeudAB* racine) {
+  if (racine == NULL) {
+    return;
+  }
+
+  PileGen* stack = creerPileGen();
+  NoeudAB* courant = racine;
+
+  while (!estVidePileGen(stack) || courant != NULL) {
+    if (courant != NULL) {
+      empilerGen(stack, courant);
+      courant = courant->gauche;
+    } else {
+      courant = depilerGen(stack);
+      printf("%d ", courant->valeur);
+      courant = courant->droit;
     }
   }
+  detruirePileGen(stack);
   printf("\n");
+}
+
+void parcourirPostItAB(NoeudAB* racine) {
+  if (racine == NULL) {
+    return;
+  }
+
+  PileGen* stack = creerPileGen();
+  NoeudAB* courant = racine;
+  NoeudAB* lastVisited = NULL;
+
+  while (!estVidePileGen(stack) || courant != NULL) {
+    if (courant != NULL) {
+      empilerGen(stack, courant);
+      courant = courant->gauche;
+    } else {
+      NoeudAB* peekNode = sommetPileGen(stack);
+      if (peekNode->droit != NULL && lastVisited != peekNode->droit) {
+        courant = peekNode->droit;
+      } else {
+        printf("%d ", peekNode->valeur);
+        lastVisited = depilerGen(stack);
+      }
+    }
+  }
+  detruirePileGen(stack);
+  printf("\n");
+}
+
+NoeudAB* creerArbreDunTab(int* tab, int taille, int index) {
+  if (index >= taille || tab[index] == -1) {
+    return NULL;
+  }
+
+  NoeudAB* noeud = malloc(sizeof(NoeudAB));
+  noeud->valeur = tab[index];
+  noeud->gauche = creerArbreDunTab(tab, taille, 2 * index + 1);
+  noeud->droit = creerArbreDunTab(tab, taille, 2 * index + 2);
+  return noeud;
+}
+
+NoeudAB* creerNoeudAB(int valeur) {
+  NoeudAB* noeud = malloc(sizeof(NoeudAB));
+  noeud->valeur = valeur;
+  noeud->droit = NULL;
+  noeud->gauche = NULL;
+  return noeud;
+}
+
+void printSpace(int nb) {
+  while (nb--) {
+    printf(" ");
+  }
+}
+
+int puissance(int nb, int p) {
+  int result = 1;
+  while (p-- > 0) {
+    result *= nb;
+  }
+  return result;
+}
+
+static NoeudAB noeudVide = {-1, NULL, NULL};
+
+void afficherAB(NoeudAB* racine) {
+  if (racine == NULL) {
+    printf("Arbre vide.\n");
+    return;
+  }
+
+  int h = calculerHauteurAB(racine);
+  int w = 2;
+
+  int tailleMax = puissance(2, h + 1);
+  NoeudAB** niveau = malloc(tailleMax * sizeof(NoeudAB*));
+  NoeudAB** prochainNiveau = malloc(tailleMax * sizeof(NoeudAB*));
+
+  niveau[0] = racine;
+  int tailleNiveau = 1;
+
+  for (int p = 0; p <= h; p++) {
+    int facteur = puissance(2, h - p);
+    int espaceIni = facteur * w - w;
+    int espaceInter = 2 * facteur * w - w;
+
+    printSpace(espaceIni);
+
+    int tailleProchain = 0;
+
+    for (int i = 0; i < tailleNiveau; i++) {
+      NoeudAB* courant = niveau[i];
+
+      if (courant == &noeudVide) {
+        printSpace(w);
+      } else {
+        printf("%2d", courant->valeur);
+      }
+
+      if (i < tailleNiveau - 1) {
+        printSpace(espaceInter);
+      }
+
+      if (p < h) {
+        if (courant == &noeudVide) {
+          prochainNiveau[tailleProchain++] = &noeudVide;
+          prochainNiveau[tailleProchain++] = &noeudVide;
+        } else {
+          prochainNiveau[tailleProchain++] =
+              (courant->gauche != NULL) ? courant->gauche : &noeudVide;
+          prochainNiveau[tailleProchain++] =
+              (courant->droit != NULL) ? courant->droit : &noeudVide;
+        }
+      }
+    }
+
+    printf("\n");
+
+    NoeudAB** tmp = niveau;
+    niveau = prochainNiveau;
+    prochainNiveau = tmp;
+    tailleNiveau = tailleProchain;
+  }
+
+  free(niveau);
+  free(prochainNiveau);
 }

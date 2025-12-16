@@ -6,6 +6,8 @@
 
 #include <stdio.h>
 
+#include "filegen.h"
+
 /**
  * @brief Affiche une ligne de séparation.
  *
