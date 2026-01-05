@@ -1,113 +1,102 @@
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define TAILLE_GRILLE 81
+#define GRID_SIZE 81  // 9x9 = 81 caractères
 
 /**
- * @brief Vérifie si une grille de sudoku est valide (format)
+ *  @brief Vérifie qu'une grille est valide
  *
- * @param grille la chaîne représentant la grille
- * @return int 1 si valide, 0 sinon
- */
-int estGrilleValide(const char* grille) {
-  // Vérifier la longueur
-  if (strlen(grille) != TAILLE_GRILLE) {
-    return 0;
-  }
-
-  // Vérifier que tous les caractères sont des chiffres (0-9)
-  for (int i = 0; i < TAILLE_GRILLE; i++) {
-    if (grille[i] < '0' || grille[i] > '9') {
-      return 0;
+ * Deux critères simples sont utilisés:
+ *  - La grille doit contenir exactement 81 caractères
+ *  - Chaque caractère doit être un chiffre entre 0 et 9
+ *
+ * @note La faisabilité et l'unicité de la solution n'est pas vérifiée
+ *
+ * @param grid La grille à vérifier
+ * @return true si la grille est valide, false sinon
+ *
+ *  */
+bool estValide(const char* grid) {
+  if (strlen(grid) != GRID_SIZE) return false;
+  for (int i = 0; i < GRID_SIZE; i++) {
+    if (grid[i] < '0' || grid[i] > '9') {
+      return false;
     }
   }
-
-  return 1;
+  return true;
 }
 
 /**
- * @brief Vérifie si une grille existe déjà dans le fichier
+ * @brief Vérifie si une grille est déjà présente dans le fichier sudokus.txt
  *
- * @param grille la grille à vérifier
- * @param nomFichier le nom du fichier
- * @return int 1 si existe, 0 sinon
- */
-int grilleExiste(const char* grille, const char* nomFichier) {
-  FILE* fichier = fopen(nomFichier, "r");
-  if (fichier == NULL) {
-    // Le fichier n'existe pas encore, donc la grille n'existe pas
-    return 0;
-  }
-
-  char buffer[TAILLE_GRILLE + 2];  // +2 pour \n et \0
-
-  while (fgets(buffer, sizeof(buffer), fichier) != NULL) {
-    // Supprimer le retour à la ligne
-    buffer[strcspn(buffer, "\n")] = '\0';
-
-    if (strcmp(buffer, grille) == 0) {
-      fclose(fichier);
-      return 1;
-    }
-  }
-
-  fclose(fichier);
-  return 0;
-}
-
-/**
- * @brief Ajoute une grille au fichier
+ * @param grille La grille à vérifier
+ * @return true si la grille est déjà présente, false sinon
  *
- * @param grille la grille à ajouter
- * @param nomFichier le nom du fichier
- * @return int 1 si succès, 0 sinon
  */
-int ajouteGrille(const char* grille, const char* nomFichier) {
-  FILE* fichier = fopen(nomFichier, "a");
-  if (fichier == NULL) {
+bool estDejaFaite(const char* grille) {
+  FILE* file = fopen("sudokus.txt", "r");
+  if (file == NULL) {
     perror("Erreur lors de l'ouverture du fichier");
-    return 0;
+    exit(1);
+  };
+
+  // parcours du fichier pour vérifier que la grille n'est pas déjà présente
+  char buffer[GRID_SIZE + 1];
+  while (fgets(buffer, GRID_SIZE + 1, file) != NULL) {
+    if (strcmp(buffer, grille) == 0) {
+      // la grille est déjà présente
+      return true;
+    }
+  }
+  // aucune grille identique a été trouvée
+  return false;
+}
+
+/** @brief Ajoute une grille au fichier sudokus.txt
+ *
+ * @param grille La grille à ajouter
+ * @return true si la grille a été ajoutée, false sinon
+ *
+ * La procédure vérifie que la grille n'est pas déjà présente avant de l'ajouter
+ * à la fin du fichier sudokus.txt. Un message est affiché pour indiquer si
+ * l'ajout a été effectué ou non.
+ *
+ * @note Le fichier sudokus.txt doit exister et être accessible en écriture
+ */
+void ajouterSudoku(char* grille) {
+  // vérification de la validité de la grille
+  bool estInvalide = !estValide(grille);
+  bool estFaite = estDejaFaite(grille);
+  if (estInvalide || estFaite) {
+    fprintf(stderr, "\t:( La grille %s\n",
+            estInvalide ? "est invalide" : "est déjà faite");
+    return;
   }
 
-  fprintf(fichier, "%s\n", grille);
-  fclose(fichier);
-  return 1;
+  // Ouvre en mode ajout pour les ajouter à la fin
+  FILE* file = fopen("sudokus.txt", "a");
+  if (file == NULL) {
+    perror("\t:( Erreur lors de l'ouverture du fichier");
+    return;
+  };
+
+  // On ajoute à la fin grâce au mode append!
+  fprintf(file, "%s\n", grille);
+  fclose(file);
+
+  puts("\t:) Grille ajoutée avec succès");
 }
 
 int main() {
-  char grille[256];
-  const char* nomFichier = "sudokus.txt";
-
-  while (1) {
-    printf("Entrez une grille de sudoku (ou STOP pour arrêter) : ");
-
-    if (fgets(grille, sizeof(grille), stdin) == NULL) {
-      break;
-    }
-
-    grille[strcspn(grille, "\n")] = '\0';
-
-    if (strcmp(grille, "STOP") == 0) {
-      break;
-    }
-
-    if (!estGrilleValide(grille)) {
-      printf("La grille est invalide\n");
-      continue;
-    }
-
-    if (grilleExiste(grille, nomFichier)) {
-      printf("Cette grille a déjà été publiée\n");
-      continue;
-    }
-
-    if (ajouteGrille(grille, nomFichier)) {
-      printf("Grille ajoutée avec succès\n");
-    } else {
-      printf("Erreur lors de l'ajout de la grille\n");
-    }
+  char grille[GRID_SIZE] = "";
+  while (true) {
+    printf("\nEntrez une grille de sudoku (ou STOP pour arrêter): ");
+    scanf("%s", grille);
+    if (strcmp(grille, "STOP") == 0) break;
+    ajouterSudoku(grille);
   }
-
   return 0;
 }
