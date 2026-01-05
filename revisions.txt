@@ -18,7 +18,7 @@ void empiler(Pile* p, int valeur) {
         exit(1);
     }
 
-    nouveau->value = valeur;
+    nouveau->valeur = valeur;
     nouveau->suivant = p->sommet;
     p->sommet = nouveau;
 }
@@ -30,7 +30,7 @@ int depiler(Pile* p) {
     }
 
     Noeud* temp = p->sommet;
-    int ret = temp->value;
+    int ret = temp->valeur;
 
     p->sommet = temp->suivant;
     free(temp);
@@ -47,7 +47,7 @@ typedef struct {
 
 Noeud* init(int valeur) {
   Noeud* nouveau = (Noeud*)malloc(sizeof(Noeud));
-  nouveau->value = valeur;
+  nouveau->valeur = valeur;
   nouveau->suivant = NULL;
   return nouveau;
 }
@@ -56,7 +56,7 @@ bool FileEstVide(File* f) { return f->tete == NULL; }
 
 void enfiler(File* file, int valeur) {
   Noeud* nouveau = init(valeur);
-  if (file->queue == NULL) {
+  if (FileEstVide(file)) {
     file->tete = nouveau;
   } else {
     file->queue->suivant = nouveau;
@@ -64,16 +64,16 @@ void enfiler(File* file, int valeur) {
   file->queue = nouveau;
 }
 
-bool defiler(File *file, int *val){
+int defiler(File *file){
     if (FileEstVide(file)) {
-        return false;
+        return;
     }
     Noeud* tmp = file->tete;
-    *val = tmp->value;
+    val = tmp->valeur;
     file->tete = file->tete->suivant;
-    if (file->tete == NULL) {
+    if (FileEstVide(file)) {
         file->queue = NULL;
     }
     free(tmp);
-    return true;
+    return val;
 }

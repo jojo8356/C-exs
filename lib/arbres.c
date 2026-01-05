@@ -7,14 +7,18 @@
 #include "filegen.h"
 #include "pilegen.h"
 
+int max(int a, int b) {
+  if (a > b) return a;
+  return b;
+}
+
 int calculerHauteurAB(NoeudAB* racine) {
   if (racine == NULL) {  // si vide
     return -1;
   } else {
     int hauteurGauche = calculerHauteurAB(racine->gauche);
     int hauteurDroite = calculerHauteurAB(racine->droit);
-    return (hauteurGauche > hauteurDroite ? hauteurGauche : hauteurDroite) +
-           1;  // 1 + max(gauche, droite)
+    return max(hauteurDroite, hauteurGauche) + 1;  // 1 + max(gauche, droite)
   }
 }
 

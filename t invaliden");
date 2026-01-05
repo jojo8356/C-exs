@@ -1,0 +1,447 @@
+[4mGREP[24m(1)                                                                        Commandes de l'utilisateur                                                                       [4mGREP[24m(1)
+
+[1mNOM[0m
+       grep, egrep, fgrep, rgrep - Afficher les lignes correspondant à un motif donné
+
+[1mSYNOPSIS[0m
+       [1mgrep [22m[[4mOPTION[24m...] [4mMOTIF[24m [[4mFICHIER[24m...]
+       [1mgrep [22m[[4mOPTION[24m...] [1m-e [4m[22mMOTIF[24m ... [[4mFICHIER[24m...]
+       [1mgrep [22m[[4mOPTION[24m...] [1m-f [4m[22mMOTIF_FICHIER[24m ... [[4mFICHIER[24m...]
+
+[1mDESCRIPTION[0m
+       [1mgrep  [22mcherche  un  [4mMOTIF[24m  dans  chaque  [4mFICHIER[24m.  [4mMOTIF[24m  est  un  ou  plusieurs  motifs  séparés par un retour à la ligne et [1mgrep [22maffiche chaque ligne correspondant à un motif.
+       Généralement, [4mMOTIF[24m devrait être entre guillemets lorsque [1mgrep [22mest utilisé dans un interpréteur de commandes.
+
+       Un fichier « [1m- [22m» signifie l'entrée standard. Si aucun [4mFICHIER[24m n'est donné, les recherches récursives explorent le répertoire de travail et celles non récursives lisent l'entrée
+       standard.
+
+       Debian fournit aussi les variantes [1megrep[22m, [1mfgrep [22met [1mrgrep[22m. Ces programmes sont respectivement équivalentss  aux  commandes  [1mgrep -E[22m,  [1mgrep -F  [22met  [1mgrep -r[22m.  Ces  variantes  sont
+       obsolètes  en  amont mais Debian les fournit pour assurer la rétro-compatibilité. Pour des raisons de portabilité, il est recommandé d'éviter ces variantes et d'utiliser plutôt
+       [1mgrep [22mavec les options liées.
+
+[1mOPTIONS[0m
+   [1mInformations générales sur le programme[0m
+       [1m--help [22mAfficher un message d'utilisation et quitter.
+
+       [1m-V[22m, [1m--version[0m
+              Afficher le numéro de version de [1mgrep [22met quitter.
+
+   [1mSyntaxe du motif[0m
+       [1m-E[22m, [1m--extended-regexp[0m
+              Interpréter le [4mMOTIF[24m comme une expression rationnelle étendue (ERE, voir ci-dessous).
+
+       [1m-F[22m, [1m--fixed-strings[0m
+              Interpréter le [4mMOTIF[24m comme étant une chaîne figée, pas une expression rationnelle.
+
+       [1m-G[22m, [1m--basic-regexp[0m
+              Interpréter le [4mMOTIF[24m comme une expression rationnelle simple (BRE, voir ci-dessous). C'est le comportement par défaut.
+
+       [1m-P[22m, [1m--perl-regexp[0m
+              Interpréter le [4mMOTIF[24m comme une expression rationnelle Perl (PCRE). Cette option est expérimentale quand on la combine à [1m-z [22m([1m--null-data[22m) et [1mgrep -P [22mpourrait signaler des
+              fonctionnalités non implémentées.
+
+   [1mContrôle de correspondance[0m
+       [1m-e [4m[22mMOTIF[24m, [1m--regexp=[4m[22mMOTIF[0m
+              Utiliser [4mMOTIF[24m comme motif. Si cette option est utilisée plusieurs fois ou en combinaison avec l'option [1m-f [22m([1m-\^-file[22m), rechercher les motifs donnés.  Cette  option  peut
+              être utilisée pour protéger un motif commençant par « - ».
+
+       [1m-f [4m[22mFICHIER[24m, [1m--file=[4m[22mFICHIER[0m
+              Utiliser les motifs depuis [4mFICHIER[24m, un par ligne. Si cette option est utilisée plusieurs fois ou combinée avec l'option [1m-e [22m([1m--regexp[22m), rechercher tous les motifs donnés.
+              Un fichier vide ne contient pas de motif et ne donne donc aucun résultat. Si le [4mFICHIER[24m est [1m-[22m, lire les motifs à partir de l'entrée standard.
+
+       [1m-i[22m, [1m--ignore-case[0m
+              Ignorer les distinctions de casse dans les motifs et les données d'entrée, pour que les correspondances incluent les caractères qui ne diffèrent que par leur casse.
+
+       [1m--no-ignore-case[0m
+              Ne  pas  ignorer  les  distinctions  de  casse  dans les motifs et les données d'entrée, c'est le comportement par défaut. Cette option sert à dire aux scripts shell qui
+              utilisent déjà [1m-i [22md'annuler ses effets puisque les deux options s'outrepassent entre elles.
+
+       [1m-v[22m, [1m--invert-match[0m
+              Inverser la mise en correspondance, pour sélectionner les lignes ne correspondant pas au motif.
+
+       [1m-w[22m, [1m--word-regexp[0m
+              Ne sélectionner que les lignes contenant des correspondances formant des mots complets. La sous-chaîne correspondante doit donc soit se trouver au  début  de  la  ligne,
+              soit  être  précédée  d'un  caractère  ne  pouvant entrer dans la constitution d'un mot. De même, elle doit soit se trouver à la fin de la ligne, soit être suivie par un
+              caractère ne pouvant entrer dans la constitution d'un mot. Les caractères composant les mots sont les lettres, les chiffres et le souligné « _ ». Cette option  est  sans
+              effet si [1m-x [22mest également spécifié.
+
+       [1m-x[22m, [1m--line-regexp[0m
+              Ne  sélectionner  que  les  correspondances  exactes  de ligne entière. Pour un motif d'expression rationnelle, c'est comme si on met le motif entre parenthèses et qu'on
+              l'ancre entre [1m^ [22met [1m$[22m.
+
+   [1mContrôle général de l'affichage[0m
+       [1m-c[22m, [1m--count[0m
+              Ne pas afficher les résultats normaux. À la place, afficher un décompte des lignes correspondant au motif pour chaque fichier. Avec  l'option  [1m-v[22m,  [1m--invert-match  [22m(voir
+              ci-dessous), afficher le nombre de lignes ne contenant pas le motif.
+
+       [1m--color[22m[[1m=[4m[22mQUAND[24m], [1m--colour[22m[[1m=[4m[22mQUAND[24m]
+              Encadrer  les  chaînes  (non vides) des correspondances, les lignes qui correspondent, les lignes de contexte, les noms de fichiers, les numéros de lignes, les positions
+              relatives en octets et les séparateurs (pour les champs et groupes de lignes de contexte) avec des séquences d'échappement pour les afficher en couleur sur le  terminal.
+              Les couleurs sont définies par la variable d'environnement [1mGREP_COLORS[22m. [4mQUAND[24m vaut [1mnever [22m(jamais), [1malways [22m(toujours) ou [1mauto[22m.
+
+       [1m-L[22m, [1m--files-without-match[0m
+              Ne pas afficher les résultats normaux. À la place, indiquer le nom des fichiers pour lesquels aucun résultat n'aurait été affiché.
+
+       [1m-l[22m, [1m--files-with-matches[0m
+              Ne  pas afficher les résultats normaux. À la place, indiquer le nom des fichiers pour lesquels un résultat aurait été affiché. La recherche dans chaque fichier cesse dès
+              la première correspondance.
+
+       [1m-m [4m[22mN[24m, [1m--max-count=[4m[22mN[0m
+              Arrêter de lire un fichier après avoir trouvé [4mN[24m lignes sélectionnées. Si [4mN[24m est zéro, [1mgrep [22ms'arrête immédiatement sans lire l'entrée. Une entrée [4mN[24m de [1m-1 [22mest traitée comme
+              l'infini et [1mgrep [22mne s'arrête pas ; c'est la valeur par défaut. Si l'entrée est l'entrée standard prise depuis un fichier normal, et si [4mN[24m lignes  qui  correspondent  sont
+              affichées,  [1mgrep  [22ms'assure  avant  de  s'arrêter  que  l'entrée standard est positionnée juste après la dernière ligne qui concorde, même s'il y a des lignes de contexte
+              supplémentaires. Cela permet au processus d'appel de redémarrer une recherche. Quand [1mgrep [22ms'arrête après [4mN[24m lignes  de  concordance,  il  affiche  toutes  les  lignes  de
+              contexte suivantes. Quand l'option [1m-c [22mou [1m--count [22mest utilisée, [1mgrep [22mn'affiche pas plus de [4mN[24m lignes. Quand l'option [1m-v [22mou [1m--invert-match [22mest aussi utilisée, [1mgrep [22ms'arrête
+              après avoir affiché [4mN[24m lignes qui ne contiennent pas le motif.
+
+       [1m-o[22m, [1m--only-matching[0m
+              N'afficher que les parties (non vides) correspondantes des lignes sélectionnées, chaque partie étant affichée sur une ligne séparée.
+
+       [1m-q[22m, [1m--quiet[22m, [1m--silent[0m
+              Silencieux  ;  ne rien écrire sur la sortie standard. Quitter immédiatement avec un code zéro si une correspondance a été trouvée même si une erreur a été détectée. Voir
+              aussi l'option [1m-s [22mou [1m--no-messages[22m.
+
+       [1m-s[22m, [1m--no-messages[0m
+              Supprimer les messages d'erreur sur la non existence ou l'illisibilité des fichiers.
+
+   [1mContrôle du préfixe à l'affichage[0m
+       [1m-b[22m, [1m--byte-offset[0m
+              Afficher l'emplacement dans le fichier (qui commence à l'octet 0) devant chaque ligne de sortie. Si [1m-o [22m([1m--only-matching[22m) est  spécifiée,  afficher  l'emplacement  de  la
+              partie qui correspond.
+
+       [1m-H[22m, [1m--with-filename[0m
+              Afficher le nom du fichier pour chaque correspondance. C'est le comportement par défaut quand la recherche est effectuée sur plusieurs fichiers. C’est une extension GNU.
+
+       [1m-h[22m, [1m--no-filename[0m
+              Ne  pas afficher le nom des fichiers au début des lignes qui correspondent. C'est le comportement par défaut quand il n'y a qu'un fichier (ou que l'entrée standard) dans
+              lequel effectuer la recherche.
+
+       [1m--label=[4m[22mÉTIQUETTE[0m
+              Afficher les données provenant de l'entrée standard comme si elles provenaient du fichier [4mÉTIQUETTE[24m. C'est particulièrement  utile  pour  des  outils  qui  modifient  le
+              contenu d'un fichier avant la recherche, comme [1mgzip -cd truc.gz |grep --label=truc quelquechose[22m. Consultez également l'option [1m-H[22m.
+
+       [1m-n[22m, [1m--line-number[0m
+              Préfixer chaque ligne de sortie par le numéro, débutant à un, de la ligne débutant dans le fichier.
+
+       [1m-T[22m, [1m--initial-tab[0m
+              S'assurer  que  le premier caractère correspondant au contenu réel de la ligne est placé à un emplacement d'arrêt d'une tabulation, pour que l'alignement des tabulations
+              paraisse normal. Cela est utile avec les options qui utilisent un préfixe avant le contenu réel de la ligne : [1m-H[22m, [1m-n [22met [1m-b[22m. Pour augmenter la probabilité que toutes  les
+              lignes  d'un  fichier  commencent  à  la même colonne, cela force aussi le numéro de ligne et l'emplacement (s'ils sont présents) à être affichés dans un champ de taille
+              minimale.
+
+       [1m-Z[22m, [1m--null[0m
+              Afficher un octet NULL (le caractère ASCII NULL) à la place du caractère qui suit d'ordinaire le nom du fichier. Par exemple, [1mgrep -lZ [22maffiche un octet NULL après chaque
+              nom de fichier, à la place du changement de ligne. Cette option permet de rendre la sortie non ambiguë, même quand  les  noms  de  fichiers  contiennent  des  caractères
+              inhabituels,  comme  des changements de ligne. Cette option peut être utilisée avec des commandes telles que [1mfind -print0[22m, [1mperl -0[22m, [1msort -z[22m, et [1mxargs -0 [22mpour traiter des
+              fichiers avec des noms quelconques, même ceux contenant des changements de ligne.
+
+   [1mContrôle des lignes de contexte[0m
+       [1m-A [4m[22mN[24m, [1m--after-context=[4m[22mN[0m
+              Afficher les [4mN[24m lignes qui suivent celles contenant le motif. Une ligne contenant [1m-- [22mest insérée entre les groupes  contigus  de  correspondances.  Avec  l'option  [1m-o  [22mou
+              [1m--only-matching[22m, ça n'a aucun effet et un avertissement est affiché.
+
+       [1m-B [4m[22mN[24m, [1m--before-context=[4m[22mN[0m
+              Afficher  les  [4mN[24m  lignes  qui  précèdent celles contenant le motif. Une ligne contenant [1m-- [22mest insérée entre les groupes contigus de correspondances. Avec l'option [1m-o [22mou
+              [1m--only-matching[22m, ça n'a aucun effet et un avertissement est affiché.
+
+       [1m-C [4m[22mN[24m, [1m-[4m[22mN[24m, [1m--context=[4m[22mN[0m
+              Afficher [4mN[24m lignes de contexte. Une ligne contenant [1m-- [22mest insérée entre les groupes contigus de correspondances. Avec l'option [1m-o [22mou [1m--only-matching[22m, ça n'a aucun  effet
+              et un avertissement est affiché.
+
+       [1m--group-separator=[4m[22mSEP[0m
+              Quand les options [1m-A[22m, [1m-B [22mou [1m-C [22msont utilisées, afficher [4mSEP[24m à la place de [1m-- [22mentre les groupes de lignes.
+
+       [1m--no-group-separator[0m
+              Quand les options [1m-A[22m, [1m-B [22mou [1m-C [22msont utilisées, ne pas afficher de séparateur entre les groupes de lignes.
+
+   [1mSélection de fichiers ou répertoires[0m
+       [1m-a[22m, [1m--text[0m
+              Traiter un fichier binaire comme s'il s'agissait de texte ; c'est l'équivalent de l'option [1m--binary-files=text[22m.
+
+       [1m--binary-files=[4m[22mTYPE[0m
+              Si  les  données  ou  les  métadonnées  d'un  fichier indiquent qu'il contient des données binaires, supposer que le fichier est de type [4mTYPE[24m. Les données non textuelles
+              indiquent que le fichier est binaire ; ce sont soit des octets affichés mal encodés pour la locale, soit des octets NULL quand l'option [1m-z [22mn'est pas donnée.
+
+              Par défaut, [4mTYPE[24m est un [1mbinary [22met [1mgrep [22msupprime l'affichage après avoir trouvé des données NULL dans le binaire d’entrée et il supprime les lignes  qui  contiennent  des
+              données  mal encodées. Lorsqu'une partie de la sortie est supprimée, [1mgrep [22mfait suivre n’importe quelle sortie par un message sur la sortie d'erreur standard informant de
+              la correspondance d’un fichier binaire.
+
+              Si [4mTYPE[24m vaut [1mwithout-match[22m, quand [1mgrep [22mtrouve des données NULL de binaire d’entrée, il suppose que le reste du fichier ne correspond  pas  à  la  recherche  ;  c'est  un
+              équivalent de l'option [1m-I[22m.
+
+              Si [4mTYPE[24m vaut [1mtext[22m, [1mgrep [22mtraite un fichier binaire comme un fichier texte ; c'est un équivalent de l'option [1m-a[22m.
+
+              Quand  [4mtype[24m  est [1mbinary[22m, [1mgrep [22mpeut traiter des données non textuelles comme des marqueurs de fin de ligne même sans l'option [1m-z[22m. Cela signifie que le choix [1mbinary [22mversus
+              [1mtext [22mpeut influer sur la correspondance d'un motif à un fichier. Par exemple, quand [4mtype[24m est [1mbinary[22m, le motif [1mq$ might [22mcorrespond à un [1mq [22msuivi immédiatement  d'un  octet
+              NULL, alors que cela ne correspond à rien quand [4mtype[24m est [1mtext[22m. À l'inverse, quand [4mtype[24m est [1mbinary[22m, [1m. [22m(point) pourrait ne pas trouver d'octet NULL.
+
+              [4mAttention[24m  [4m:[24m  l'option  [1m-a  [22mpourrait  afficher  des  déchets  de  binaire  et avoir des effets indésirables si la sortie est le terminal et que le pilote du terminal les
+              interprète comme des commandes. D'un autre côté, quand on lit des fichiers à l'encodage inconnu, il  peut  être  utile  d'utiliser  [1m-a  [22mou  de  définir  [1mLC_ALL='C'  [22mdans
+              l'environnement pour trouver plus de correspondances même si certaines ne sont pas sécurisées pour un affichage direct.
+
+       [1m-D [4m[22mACTION[24m, [1m--devices=[4m[22mACTION[0m
+              Si  le  fichier est un périphérique, une FIFO ou un socket, utiliser [4mACTION[24m dessus. Par défaut, [4mACTION[24m est [1mread [22m(lecture), ce qui signifie que les périphériques sont lus
+              comme des fichiers normaux. Si [4mACTION[24m est [1mskip[22m, les périphériques sont ignorés en silence.
+
+       [1m-d [4m[22mACTION[24m, [1m--directories=[4m[22mACTION[0m
+              Si le fichier est un répertoire, utiliser [4mACTION[24m. Par défaut, [4mACTION[24m est [1mread[22m, ce qui signifie que les répertoires sont lus comme des fichiers  normaux.  Si  [4mACTION[24m  est
+              [1mskip[22m,  les  répertoires sont ignorés et aucun message n'est affiché. Si [4mACTION[24m est [1mrecurse[22m, [1mgrep [22mlit tous les fichiers présents dans chaque répertoire, récursivement, en
+              ne suivant que les liens symboliques indiqués sur la ligne de commande. C'est équivalent à l'option [1m-r[22m.
+
+       [1m--exclude=[4m[22mGLOB[0m
+              Sauter tout fichier sur la ligne de commande dont le suffixe du nom correspond au motif [4mGLOB[24m, en utilisant la correspondance de jokers ; un suffixe de nom est soit  tout
+              le  nom,  soit  la  partie  qui  commence  par  un  caractère  n’étant pas une barre oblique, immédiatement après une barre oblique ([1m/[22m) dans un nom. Lors d'une recherche
+              récursive, sauter tous les sous-fichiers dont le nom de base correspond à [4mGLOB[24m ; le nom de base est la partie après la dernière barre oblique. Un motif peut utiliser  [1m*[22m,
+              [1m? [22met [1m[[22m...[1m] [22mcomme jocker et [1m\ [22mpour interpréter littéralement les caractères joker ou barre oblique inversée.
+
+       [1m--exclude-from=[4m[22mFICHIER[0m
+              Sauter les fichiers dont le nom de fichier correspond à un des motifs contenus dans le [4mFICHIER[24m (en utilisant les jokers comme décrit pour [1m--exclude[22m).
+
+       [1m--exclude-dir=[4m[22mGLOB[0m
+              Sauter  tout répertoire sur la ligne de commande dont le suffixe de nom correspond au motif [4mGLOB[24m. Lors d'une recherche récursive, sauter tout sous-répertoire dont le nom
+              de base correspond à [4mGLOB[24m. Ignorer les barres obliques redondantes finales dans [4mGLOB[24m.
+
+       [1m-I     [22mTraiter un fichier binaire comme s'il ne contenait aucune correspondance ; c'est équivalent à l'option [1m--binary-files=without-match[22m.
+
+       [1m--include=[4m[22mGLOB[0m
+              Ne rechercher que les fichiers dont le nom correspond à [4mGLOB[24m (en utilisant des jokers correspondant comme décrit sous [1m--exclude[22m). Si vous donnez des options [1m--include [22met
+              [1m--exclude [22mcontradictoires, la dernière correspondance gagne. Si ni [1m--include[22m, ni [1m--exclude [22mne correspondent, un fichier est inclus à la recherche sauf si la première est
+              [1m--include[22m.
+
+       [1m-r[22m, [1m--recursive[0m
+              Lire récursivement tous les fichiers à l'intérieur de chaque répertoire, en ne suivant les liens symboliques que s'ils sont indiqués sur la ligne de commande.  Remarquez
+              que si vous ne donnez aucun opérande de fichier, [1mgrep [22mrecherche dans le répertoire courant. C'est l'équivalent de l'option [1m-d recurse[22m.
+
+       [1m-R[22m, [1m--dereference-recursive[0m
+              Lire récursivement tous les fichiers à l'intérieur de chaque répertoire. Suivre tous les liens symboliques, contrairement à [1m-r[22m.
+
+   [1mAutres options[0m
+       [1m--line-buffered[0m
+              Utiliser un tampon de ligne sur le flux de sortie. Cela peut réduire les performances.
+
+       [1m-U[22m, [1m--binary[0m
+              Traiter  les  fichiers  comme  s'ils  étaient  des fichiers binaires. Par défaut, sous MS-DOS et MS-Windows, [1mgrep [22mdétermine le type de fichier comme cela est décrit pour
+              l'option [1m--binary-files[22m. Si [1mgrep [22mdécide que le fichier est un fichier de texte, il enlève les retours  chariot  (CR)  du  contenu  du  fichier  original  (afin  que  les
+              expressions  avec  [1m^  [22met  [1m$ [22mfonctionnent correctement). L'option [1m-U [22mmodifie ce comportement, tous les fichiers sont alors lus et traités tels quels. Si le fichier est un
+              fichier de texte avec des paires CR-LF en fin de ligne, certaines expressions rationnelles peuvent échouer. Cette option n'a aucun effet sur des plates-formes autres que
+              MS-DOS et MS-Windows.
+
+       [1m-z[22m, [1m--null-data[0m
+              Traiter les données d’entrée et de sortie sous forme d’ensembles de lignes, chacune terminée par un octet NULL (le caractère ASCII  NULL)  au  lieu  d'un  changement  de
+              ligne. Comme l'option [1m-Z [22mou [1m--null[22m, cette option peut être combinée avec des commandes comme [1msort -z [22mpour traiter des fichiers ayant un nom quelconque.
+
+[1mEXPRESSIONS RATIONNELLES[0m
+       Une  expression  rationnelle est un motif qui permet de décrire un ensemble de chaînes. Les expressions rationnelles sont construites comme des opérations arithmétiques ; elles
+       utilisent différents opérateurs pour combiner des expressions plus petites.
+
+       [1mGrep [22mgère trois styles de syntaxe pour les expressions rationnelles : « simple » ([4mbasic[24m, BRE), « étendue » ([4mextended[24m, ERE) et « [4mPerl[24m » (PCRE). Dans la version GNU de [1mgrep[22m,  les
+       expressions  rationnelles  de  style  [4mbasic[24m  et  [4mextended[24m  sont  simplement  des  notations  différentes  pour  la même fonctionnalité de correspondance de motif. Dans d'autres
+       implémentations, les expressions rationnelles [4mbasic[24m sont normalement moins puissantes que les [4mextended[24m, bien que  parfois  ce  soit  le  contraire.  La  description  ci-dessous
+       correspond  aux  expressions  étendues,  les  différences  avec  les  expressions  simples étant résumées ensuite. Les expressions rationnelles Perl offrent des fonctionnalités
+       différentes et sont documentées dans [1mpcre2syntax[22m(3) et [1mpcre2pattern[22m(3), mais ne fonctionnent que si les PCRE sont disponibles sur le système.
+
+       Les briques élémentaires sont les expressions rationnelles correspondant à un seul caractère. La plupart des caractères, y compris les lettres et les chiffres, constituent  des
+       expressions  rationnelles et correspondent avec eux-mêmes. Tout métacaractère ayant une signification particulière doit être protégé en le faisant précéder d'une contre-oblique
+       ([4mbackslash[24m).
+
+       Le point [1m. [22mcorrespond à n'importe quel caractère. Il n'est pas spécifié s’il correspond avec une erreur d'encodage.
+
+   [1mClasses de caractères et expressions entre crochets[0m
+       Une [4mexpression[24m [4mentre[24m [4mcrochets[24m est une liste de caractères encadrée par un [1m[ [22met un [1m][22m. Elle est en correspondance avec n'importe quel caractère appartenant  à  la  liste.  Si  le
+       premier  caractère  de  la  liste  est  un  caret  « [1m^ [22m»,  alors la mise en correspondance se fait avec n'importe quel caractère [4mabsent[24m de la liste ; il n'est pas spécifié s'il
+       correspond avec une erreur d'encodage. Par exemple, l'expression rationnelle [1m[0123456789] [22mconcorde avec n'importe quel chiffre.
+
+       Entre ces crochets, un [4mintervalle[24m de caractères consiste en deux caractères séparés par un tiret. Il correspond à n'importe quel caractère compris  entre  les  deux  caractères
+       inclus,  l'ordre  des  caractères  dépendant des paramètres régionaux ([4mlocale[24m, en anglais) actuels. Ainsi, avec les paramètres locaux par défaut (« C »), [1m[a-d] [22mest équivalent à
+       [1m[abcd][22m. Avec beaucoup de paramètres régionaux, les caractères sont triés en suivant l'ordre des dictionnaires, et [1m[a-d] [22mn'est alors en général pas  équivalent  à  [1m[abcd][22m,  mais
+       peut l'être à [1m[aBbCcDd][22m, par exemple. Pour que ces listes aient le comportement habituel de « C », vous pouvez positionner la variable d'environnement [1mLC_ALL [22mà la valeur [1mC[22m.
+
+       Enfin, certaines classes de caractères prédéfinies existent à l'intérieur de crochets comme suit. Leurs noms sont assez explicites : [1m[:alnum:][22m, [1m[:alpha:][22m, [1m[:blank:][22m, [1m[:cntrl:][22m,
+       [1m[:digit:]  [22m(chiffres),  [1m[:graph:][22m, [1m[:lower:] [22m(minuscules), [1m[:print:] [22m(affichables), [1m[:punct:] [22m(ponctuation), [1m[:space:] [22m(espace), [1m[:upper:] [22m(majuscules), et [1m[:xdigit:] [22m(chiffres
+       hexadécimaux). Par exemple, [1m[[:alnum:]] [22mcorrespond aux chiffres et lettres pour les paramètres régionaux actuels.  Dans  les  paramètres  régionaux  C  et  avec  le  codage  de
+       caractères  ASCII,  c'est  équivalent  à  [1m[0-9A-Za-z][22m. Remarquez que les crochets dans les noms de classes font partie intégrante du nom symbolique, et qu'ils doivent donc être
+       inclus en plus des crochets encadrant ces expressions entre crochets. La plupart des métacaractères perdent leur signification particulière à l'intérieur d'une expression entre
+       crochets. Pour inclure un caractère [1m][22m, mettez-le en premier dans la liste. De même, pour inclure un caractère [1m^[22m, placez-le n'importe où sauf au début de la liste.  Enfin,  pour
+       inclure un [1m-[22m, placez-le en dernier.
+
+   [1mAncrage[0m
+       Le caret « [1m^ [22m» et le symbole dollar « [1m$ [22m» sont des métacaractères correspondant respectivement à une chaîne vide au début et en fin de ligne.
+
+   [1mCaractère contre-oblique et expressions spéciales[0m
+       Les  symboles  [1m\<  [22met  [1m\>  [22mcorrespondent  respectivement  à  une chaîne vide en début et en fin de mot. Le symbole [1m\b [22mcorrespond à une chaîne vide à l'extrémité d'un mot, et [1m\B[0m
+       correspond à une chaîne vide ne se trouvant [4mpas[24m à une extrémité de mot. Le symbole [1m\w [22mest un synonyme pour [1m[_[:alnum:]] [22met [1m\W [22mest un synonyme pour [1m[^_[:alnum:]][22m.
+
+   [1mRépétitions[0m
+       Dans une expression rationnelle, un caractère peut être suivi par l'un des opérateurs de répétition suivants :
+       [1m?      [22mL'élément précédent est facultatif et peut être rencontré au plus une fois.
+       [1m*      [22mL'élément précédent peut être rencontré zéro ou plusieurs fois.
+       [1m+      [22mL'élément précédent peut être rencontré une ou plusieurs fois.
+       [1m{[4m[22mn[24m[1m}    [22mL'élément précédent doit correspondre exactement [4mn[24m fois.
+       [1m{[4m[22mn[24m[1m,}   [22mL'élément précédent doit correspondre [4mn[24m fois ou plus.
+       [1m{,[4m[22mm[24m[1m}   [22mL'élément précédent doit correspondre au plus [4mm[24m fois. C’est une extension GNU.
+       [1m{[4m[22mn[24m[1m,[4m[22mm[24m[1m}  [22mL'élément précédent doit correspondre au moins [4mn[24m fois, mais au plus [4mm[24m fois.
+
+   [1mConcaténations[0m
+       Deux expressions rationnelles peuvent être concaténées ; l'expression résultante correspondra à toute chaîne formée par la  concaténation  de  deux  sous-chaînes  correspondant
+       respectivement aux expressions concaténées.
+
+   [1mAlternatives[0m
+       Deux  expressions  rationnelles  peuvent  être  reliées  par  l'opérateur  infixe [1m| [22m; l'expression résultante correspondra à toute chaîne qui comporte l'une ou l'autre des deux
+       expressions.
+
+   [1mPriorités[0m
+       Les répétitions ont priorité sur les concaténations, qui à leur tour ont priorité sur les alternatives. Une sous-expression peut être entourée par des parenthèses pour modifier
+       ces règles de priorité et former une expression.
+
+   [1mRéférences arrières et sous-expressions[0m
+       La référence arrière [1m\[4m[22mn[24m , où [4mn[24m est un chiffre unique, correspond à la sous-chaîne déjà mise en correspondance avec la [4mn[24m-ième sous-expression rationnelle entre parenthèses.
+
+   [1mExpressions rationnelles basiques et étendues[0m
+       Dans les expressions rationnelles simples, les métacaractères [1m?[22m, [1m+[22m, [1m{[22m, [1m|[22m, [1m([22m, et [1m) [22mperdent leur signification spéciale, il  faut  utiliser  à  la  place  leur  version  avec  la
+       contre-oblique [1m\?[22m, [1m\+[22m, [1m\{[22m, [1m\|[22m, [1m\([22m, et [1m\)[22m.
+
+[1mCODE DE RETOUR[0m
+       Normalement,  le  code  de retour est [1m0 [22msi des concordances ont été trouvées, [1m1 [22msi aucune concordance n'a été trouvée et [1m2 [22msi une erreur est survenue. Toutefois, si les options
+       [1m-q[22m, [1m--quiet [22mou [1m--silent [22msont utilisées et si une ligne est trouvée, le code de retour est [1m0 [22mmême si une erreur est survenue.
+
+[1mENVIRONNEMENT[0m
+       Le comportement de [1mgrep [22mest modifié par les variables d'environnement suivantes :
+
+       Les paramètres régionaux pour la catégorie [1mLC_[4m[22mtruc[24m sont définis par les trois variables d'environnement [1mLC_ALL[22m, [1mLC_[4m[22mtruc[24m, [1mLANG[22m,  dans  cet  ordre.  La  variable  positionnée  en
+       premier  détermine  le choix des paramètres régionaux. Par exemple, si [1mLC_ALL [22mn'est pas positionnée, mais [1mLC_MESSAGES [22mvaut [1mfr_FR[22m, alors le français est utilisé pour l'affichage
+       des messages. Par défaut « C » est utilisée si aucune variable d'environnement n'est trouvée, si le catalogue des paramètres régionaux n'est pas installé ou bien si [1mgrep [22ma  été
+       compilé sans le support pour les langues nationales (NLS). La commande [1mlocale -a [22mliste les paramètres régionaux actuellement disponibles.
+
+       [1mGREP_COLORS[0m
+              Contrôler  la  manière  dont  l'option  '[1m--color  [22mmet  en  évidence  la  sortie.  Sa  valeur est une liste de capacités séparées par des deux-points, qui vaut par défaut
+              [1mms=01;31:mc=01;31:sl=:cx=:fn=35:ln=32:bn=32:se=36 [22msans les capacités booléennes [1mrv [22met [1mne [22m(qui prennent alors la valeur « false », faux). Les capacités prises  en  charge
+              sont les suivantes :
+
+              [1msl=    [22mSous-chaîne  SGR  («  Select  Graphic  Rendition  »)  pour les lignes entières sélectionnées (c'est-à-dire les lignes qui correspondent quand l'option en ligne de
+                     commande [1m-v [22mn'est pas utilisée, ou les lignes qui ne correspondent pas quand [1m-v [22mest spécifiée). Si cependant la capacité booléenne [1mrv  [22met  l'option  en  ligne  de
+                     commande  [1m-v [22msont toutes deux indiquées, cela s'applique à la place aux lignes de contexte qui correspondent. La valeur par défaut est vide (c'est-à-dire la paire
+                     de couleurs par défaut du terminal).
+
+              [1mcx=    [22mSous-chaîne SGR pour les lignes de contexte entières (c'est-à-dire les lignes qui ne correspondent pas quand l'option en ligne de commande [1m-v [22mn'est pas  utilisée,
+                     ou les lignes qui correspondent quand [1m-v [22mest indiquée). Si cependant la capacité booléenne [1mrv [22met l'option en ligne de commande [1m-v [22msont toutes deux indiquées, cela
+                     s'applique à la place aux lignes qui ne correspondent pas. La valeur par défaut est vide (c'est-à-dire la paire de couleurs par défaut du terminal).
+
+              [1mrv     [22mValeur  booléenne  qui  inverse la signification des capacités [1msl= [22met [1mcx= [22mquand l’option de ligne de commande [1m-v [22mest indiquée. La valeur par défaut est le booléen
+                     faux (c'est-à-dire la capacité est omise).
+
+              [1mmt=01;31[0m
+                     Sous-chaîne SGR pour le texte non vide qui correspond dans toute ligne qui correspond (c'est-à-dire une ligne sélectionnée quand l'option en ligne de commande  [1m-v[0m
+                     n'est pas utilisée, ou une ligne de contexte quand [1m-v [22mest spécifiée). L'utiliser est équivalent à utiliser à la fois [1mms= [22met [1mmc= [22mavec la même valeur. La valeur par
+                     défaut correspond à du texte rouge en gras sur le fond de la ligne actuelle.
+
+              [1mms=01;31[0m
+                     Sous-chaîne  SGR  pour  le  texte  non  vide  qui  correspond  dans  une ligne sélectionnée (ce n'est utilisé que quand l'option en ligne de commande [1m-v [22mn'est pas
+                     utilisée). L'effet de la capacité [1msl= [22m(ou [1mcx= [22msi [1mrv [22mest activée) reste actif quand c'est utilisé. La valeur par défaut correspond à du texte rouge en gras sur  le
+                     fond de la ligne actuelle.
+
+              [1mmc=01;31[0m
+                     Sous-chaîne  SGR  pour  le  texte  non  vide  qui  correspond  dans  les lignes de contexte (ce n'est utilisé que quand l'option en ligne de commande [1m-v [22mn'est pas
+                     utilisée). L'effet de la capacité [1mcx= [22m(ou [1msl= [22msi [1mrv [22mest activée) reste actif quand c'est utilisé. La valeur par défaut correspond à du texte rouge en gras sur  le
+                     fond de la ligne actuelle.
+
+              [1mfn=35  [22mSous-chaîne SGR pour les noms de fichier qui préfixent les lignes de contenu. La valeur par défaut correspond à du texte de couleur magenta sur le fond par défaut
+                     du terminal.
+
+              [1mln=32  [22mSous-chaîne  SGR  pour les numéros de ligne qui préfixent les lignes de contenu. La valeur par défaut correspond à du texte de couleur vert sur le fond par défaut
+                     du terminal.
+
+              [1mbn=32  [22mSous-chaîne SGR pour les emplacements qui préfixent les lignes de contenu. La valeur par défaut correspond à du texte de couleur vert sur le fond  par  défaut  du
+                     terminal.
+
+              [1mse=36  [22mSous-chaîne  SGR  pour  les  séparateurs  qui sont insérés entre les champs des lignes sélectionnées ([1m:[22m), entre les champs des lignes de contexte ([1m-[22m) et entre les
+                     groupes de lignes adjacentes quand un contexte non nul est spécifié ([1m--[22m). La valeur par défaut correspond à du texte de couleur cyan sur le  fond  par  défaut  du
+                     terminal.
+
+              [1mne     [22mValeur  booléenne  qui  évite l'effacement de la fin de la ligne en utilisant une séquence EL (« Erase in Line », ou en français « Effacement en Ligne »), vers la
+                     droite ([1m\33[K[22m) à chaque fois qu'un élément coloré se termine. C'est nécessaire pour les terminaux sur lesquels EL n'est pas pris en  charge.  Sinon,  c'est  aussi
+                     utile  pour  les  terminaux  sur  lesquels  la capacité booléenne terminfo « [1mback_color_erase [22m» ([1mbce[22m) ne s'applique pas, quand les couleurs de mise en évidence ne
+                     touchent pas à la couleur de fond, quand EL est trop lent ou cause trop de scintillements. La valeur par défaut est le booléen faux (c'est-à-dire que la  capacité
+                     n'est pas activée).
+
+              Notez que les capacités booléennes n'ont pas de partie « [1m=[22m... ». Elles sont omises par défaut (ce qui correspond à une valeur booléenne faux) et deviennent vrai si elles
+              sont précisées.
+
+              Voir  la  section  Select  Graphic Rendition (SGR) dans la documentation du terminal texte utilisé pour avoir la liste des valeurs autorisées et leur signification comme
+              attributs de caractère. Ces valeurs de sous-chaînes sont des entiers sous forme décimale et peuvent  être  concaténées  à  l'aide  de  points-virgules.  [1mgrep  [22mse  charge
+              d'assembler  le  résultat  en  une  séquence  SGR  complète  ([1m\33[[22m...[1mm[22m).  Les  valeurs courantes à concaténer sont entre autres [1m1 [22m(gras), [1m4 [22m(souligné), [1m5 [22m(clignotant), [1m7[0m
+              (inversé), [1m39 [22m(couleur de trait par défaut), [1m30 [22mà [1m37 [22m(couleurs de trait), [1m90 [22mà [1m97 [22m(couleurs de trait en mode 16 couleurs), [1m38;5;0 [22mà [1m38;5;255 [22m(couleurs de trait  en  mode
+              88 et 256 couleurs), [1m49 [22m(couleur de fond par défaut), [1m40 [22mà [1m47 [22m(couleurs de fond), [1m100 [22mà [1m107 [22m(couleurs de fond en mode 16 couleurs) et [1m48;5;0 [22mà [1m48;5;255 [22m(couleurs de fond
+              en mode 88 et 256 couleurs).
+
+       [1mLC_ALL[22m, [1mLC_COLLATE[22m, [1mLANG[0m
+              Ces  variables  indiquent  le  choix  des  paramètres  régionaux  pour  la  catégorie  [1mLC_COLLATE[22m, qui détermine l'ordre des caractères utilisé pour l'interprétation des
+              intervalles tels que [1m[a-z][22m.
+
+       [1mLC_ALL[22m, [1mLC_CTYPE[22m, [1mLANG[0m
+              Ces variables spécifient les paramètres régionaux de la catégorie [1mLC_CTYPE[22m, ce qui détermine le type de caractères, par exemple, quels caractères sont des blancs.  Cette
+              catégorie  détermine  aussi  l'encodage  de  caractères,  c'est-à-dire  si  le texte est encodé en UTF-8, ASCII ou un autre encodage. Avec la locale C ou POSIX, tous les
+              caractères sont encodés sur un octet et chaque octet est un caractère valable.
+
+       [1mLC_ALL[22m, [1mLC_MESSAGES[22m, [1mLANG[0m
+              Ces variables indiquent le choix des paramètres régionaux pour la catégorie [1mLC_MESSAGES[22m, qui détermine la langue utilisée par [1mgrep  [22mpour  ses  messages.  Les  paramètres
+              « C » utilisés par défaut sont en anglais américain.
+
+       [1mPOSIXLY_CORRECT[0m
+              Si  cette  variable est positionnée, [1mgrep [22mse comporte comme indiqué dans la norme POSIX. Sinon, [1mgrep [22mse comporte plus comme les autres programmes GNU. POSIX requiert que
+              les options qui suivent des noms de fichiers soient considérées aussi comme des noms de fichiers. Par défaut, ces options sont déplacées avant la liste des opérandes  et
+              sont  traitées comme des options. POSIX requiert aussi que les options non reconnues soient considérées comme « illégales » ; mais comme elles n'enfreignent pas vraiment
+              les règles, elles sont rapportées comme étant « incorrectes » par défaut.
+
+[1mNOTES[0m
+       Cette page de manuel est maintenue de façon intermittente. La documentation complète est mise à jour plus souvent.
+
+[1mCOPYRIGHT[0m
+       Copyright 1998-2000, 2002, 2005-2023 Free Software Foundation, Inc.
+
+       C'est un logiciel libre ; consultez les sources pour les conditions de copie. Il n'y a AUCUNE garantie ; même  pas  de  VALEUR  MARCHANDE  ou  d'ADÉQUATION  À  UNE  UTILISATION
+       PARTICULIÈRE.
+
+[1mBOGUES[0m
+   [1mRemonter des bogues[0m
+       Envoyez  par  courriel  les  signalements de bogues à l'adresse ⟨bug-grep@gnu.org⟩. Une archive de courrier électronique ⟨https://lists.gnu.org/mailman/listinfo/bug-grep⟩ et un
+       gestionnaire de bogues ⟨https://debbugs.gnu.org/cgi/pkgreport.cgi?package=grep⟩ sont disponibles.
+
+   [1mBogues connus[0m
+       Dans les constructions [1m{[4m[22mn[24m[1m,[4m[22mm[24m[1m} [22mde grandes valeurs de répétition peuvent pousser [1mgrep [22mà utiliser beaucoup de mémoire. D'autres expressions rationnelles tordues peuvent prendre  un
+       temps très long et mener à une insuffisance de mémoire.
+
+       Les références arrières sont très lentes et peuvent demander un temps très important (exponentiel).
+
+[1mEXEMPLE[0m
+       L'exemple  suivant affiche l'emplacement et le contenu de n'importe quelle ligne contenant « f » et se terminant par « .c » dans tous les fichiers du répertoire courant dont le
+       nom contient « g » et se termine par « .h ». L'option [1m-n [22maffiche les numéros de ligne, l'argument [1m-- [22mtraite les expansions de « *g*.h » commençant par « - » comme des  noms  de
+       fichier, pas des options, et le fichier [4m/dev/null[24m fait en sorte que les noms de fichier soient affichés même si un seul nom de fichier a la forme « *g*.h ».
+
+         $ [1mgrep [22m-n -- 'f.*\.c$' *g*.h /dev/null
+         argmatch.h:1:/* definitions and prototypes for argmatch.c
+
+       La  seule  ligne qui correspond est la première ligne d'[4margmatch.h[24m. Remarquez que la syntaxe de l'expression rationnelle utilisée dans le motif diffère de celle avec des jokers
+       (glob) utilisée par l'interpréteur pour les correspondances de noms de fichier.
+
+[1mVOIR AUSSI[0m
+   [1mPages de manuel[0m
+       [1mawk[22m(1), [1mcmp[22m(1), [1mdiff[22m(1), [1mfind[22m(1), [1mperl[22m(1), [1msed[22m(1), [1msort[22m(1), [1mxargs[22m(1), [1mread[22m(2), [1mpcre[22m(3), [1mpcresyntax[22m(3), [1mpcrepattern[22m(3), [1mterminfo[22m(5), [1mglob[22m(7), [1mregex[22m(7)
+
+   [1mDocumentation complète[0m
+       Un manuel complet ⟨https://www.gnu.org/software/grep/manual/⟩ est disponible. Si les programmes [1minfo [22met [1mgrep [22msont correctement installés sur votre système, la commande
+
+              [1minfo grep[0m
+
+       devrait vous donner accès au manuel complet.
+
+[1mTRADUCTION[0m
+       La traduction française de cette page de manuel a été créée par Luc Froidefond <luc.froidefond@free.fr>, Nicolas François <nicolas.francois@centraliens.net>,  Florentin  Duneau
+       <fduneau@gmail.com>,  David  Prévot  <david@tilapin.org>,  Cédric  Boutillier  <cedric.boutillier@gmail.com>, Jean-Philippe MENGUAL <jpmengual@debian.org> et Jean-Pierre Giraud
+       <jean-pierregiraud@neuf.fr>
+
+       Cette traduction est une documentation libre ; veuillez vous reporter à la GNU General Public  License  version  3  ⟨https://www.gnu.org/licenses/gpl-3.0.html⟩  concernant  les
+       conditions de copie et de distribution. Il n'y a aucune RESPONSABILITÉ LÉGALE.
+
+       Si vous découvrez un bogue dans la traduction de cette page de manuel, veuillez envoyer un message à ⟨debian-l10n-french@lists.debian.org⟩.
+
+GNU grep 3.11                                                                          2019-12-29                                                                               [4mGREP[24m(1)
