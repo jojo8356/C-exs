@@ -3,14 +3,17 @@
 
 #include "../../lib/arbres.h"
 
-int main() {
-  NoeudAB* racine = creerExempleAB();
+int main(void) {
   printf(
       "Création de l'arbre: "
       "https://commons.wikimedia.org/wiki/File:Binary_tree.svg\n\n");
-  printTree(racine);
-  printf("\n\nParcours en largeur : ");
-  parcoursLargeur(racine);
-  libererAB(&racine);
+
+  NoeudAB* arbre = creerExempleAB();
+  afficherAB(arbre);
+
+  printf("\nParcours en largeur : ");
+  parcoursLargeur(arbre);
+
+  libererAB(&arbre);
   return 0;
 }
